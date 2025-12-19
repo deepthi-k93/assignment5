@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:assignment_5/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -84,27 +85,31 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                   children: [
                     circleProfiles(
                       "https://www.placeholderimage.online/images/professional/best-profile-picture.jpg",
+                      "Arathi",
                     ),
                     SizedBox(width: 10),
                     circleProfiles(
                       "https://www.placeholderimage.online/images/professional/profile-pic.jpg",
+                      "Aswathi",
                     ),
                     SizedBox(width: 10),
                     circleProfiles(
                       "https://www.placeholderimage.online/images/professional/profile-photo.jpg",
+                      "Arun",
                     ),
                     SizedBox(width: 10),
                     circleProfiles(
                       "https://www.placeholderimage.online/images/professional/beautiful-profile-pictures.jpg",
+                      "Deepthi",
                     ),
                     SizedBox(width: 10),
                     circleProfiles(
                       "https://www.placeholderimage.online/images/professional/good-picture-for-profile.jpg",
+                      "Sruthi",
                     ),
                   ],
                 ),
               ),
-              //Heading details
             ),
 
             // SizedBox(height: 10),
@@ -142,21 +147,26 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
             ), //buttons list
 
             Container(
-              //Biodata
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
                 children: [
-                  Text(
-                    "",
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  Column(
+                    children: [
+                      Image.network("https://www.placeholderimage.online/images/professional/beautiful-profile-pictures.jpg",),
+                      Text(
+                        "Hi Deepthi,Welcome to our Team",
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
+
                   Text(
                     "",
                     softWrap: true,
@@ -241,35 +251,20 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
     );
   }
 
-  Row circleProfiles(String profileImageLink) {
-    return Row(
+  Column circleProfiles(String profileImageLink, String title) {
+    return Column(
       children: [
-        CircleAvatar(
-          radius: 50,
-          backgroundImage: NetworkImage(profileImageLink),
-          backgroundColor: Colors.grey, // Fallback color if image loads slowly
+        InkWell(
+          onTap: () => logger.i("image clicked $title"),
+          child: CircleAvatar(
+            radius: 50,
+            backgroundImage: NetworkImage(profileImageLink),
+            backgroundColor: Colors.grey,
+          ),
         ),
+
+        Text(title, style: TextStyle(fontFamily: "TenorSans", fontSize: 20)),
       ],
-    );
-  }
-}
-
-class SocialMediaContainer extends StatelessWidget {
-  final String url;
-
-  const SocialMediaContainer({super.key, required this.url});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      alignment: Alignment.center,
-      child: Image.network(url, height: 40, width: 40, fit: BoxFit.cover),
     );
   }
 }
