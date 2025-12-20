@@ -1,11 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
 import 'package:assignment_5/home_screen.dart';
+import 'package:assignment_5/model/user_model.dart';
 import 'package:assignment_5/register_acc.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -20,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   String email = '';
   String pwd = '';
   // final storage = FlutterSecureStorage();
-
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,8 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          final SharedPreferences prefs = await SharedPreferences.getInstance();
+                          final SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
                           String msg = "";
                           // To write data
                           bool pr = prefs.containsKey(email);
@@ -111,24 +113,23 @@ class _LoginPageState extends State<LoginPage> {
                             msg = "Logged In ";
                             // To write data
                             await prefs.setBool("loggedIn", true);
-                            await prefs.setString("loggedInUser",email);
-                            String? em = prefs.getString("loggedInUser").toString();
-                           /* ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "$msg , ${em!}",
-                                  softWrap: true,
-                                  style: TextStyle(
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ),
-                            );*/
+                            await prefs.setString("loggedInUser", email);
+                            // String? em = prefs
+                            //     .getString("loggedInUser")
+                            //     .toString();
+                            String? user1 = prefs.getString(email);
+                            if (user1 == null) {
+                              return;
+                            }
+                            Map<String, dynamic> userMap =
+                                jsonDecode(user1) as Map<String, dynamic>;
+                            var userName = UserModel.fromJson(userMap).userName;
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => HomeScreenPage(loggedUser: em),
+                                builder: (context) =>
+                                    HomeScreenPage(loggedUser: userName),
                               ),
                             );
                           } else {

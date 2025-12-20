@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:assignment_5/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -62,7 +61,12 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
             ),
-            child: Row(children: [Icon(Icons.logout), Text("Logout")]),
+            child: Row(
+              children: [
+                Icon(Icons.logout),
+                Text("Logout ${widget.loggedUser}"),
+              ],
+            ),
           ),
         ],
       ),
@@ -155,9 +159,11 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                 children: [
                   Column(
                     children: [
-                      Image.network("https://www.placeholderimage.online/images/professional/beautiful-profile-pictures.jpg",),
+                      Image.network(
+                        "https://www.placeholderimage.online/images/professional/beautiful-profile-pictures.jpg",
+                      ),
                       Text(
-                        "Hi Deepthi,Welcome to our Team",
+                        "Hi ${widget.loggedUser},Welcome to our Team",
                         style: TextStyle(
                           fontSize: 30,
                           fontStyle: FontStyle.italic,
@@ -255,7 +261,17 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
     return Column(
       children: [
         InkWell(
-          onTap: () => logger.i("image clicked $title"),
+          onTap: () => {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  title,
+                  style: TextStyle(fontStyle: FontStyle.normal, fontSize: 20),
+                ),
+              ),
+            ),
+          },
+          // logger.i("image clicked $title"),
           child: CircleAvatar(
             radius: 50,
             backgroundImage: NetworkImage(profileImageLink),

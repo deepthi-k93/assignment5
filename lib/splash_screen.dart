@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:assignment_5/home_screen.dart';
 import 'package:assignment_5/login_page.dart';
+import 'package:assignment_5/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -77,10 +79,18 @@ class _SplashScreenState extends State<SplashScreen>
       if (userIsLoggedIn) {
         String? user = prefs.getString("loggedInUser").toString();
 
+        String? user1 = prefs.getString(user);
+        if (user1 == null) {
+          return;
+        }
+        Map<String, dynamic> userMap =
+            jsonDecode(user1) as Map<String, dynamic>;
+        var userName = UserModel.fromJson(userMap).userName;
+
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreenPage(loggedUser: user),
+            builder: (context) => HomeScreenPage(loggedUser: userName),
           ),
         );
       } else {
